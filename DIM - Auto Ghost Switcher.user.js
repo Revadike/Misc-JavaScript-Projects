@@ -12,7 +12,7 @@
 
 // ==Config==
 const STEAMID3 = 82699538; // steamID3, get from https://steamid.io/lookup/
-const INTERVAL = 1; // seconds, time between checking current in-game status
+const INTERVAL = 10; // seconds, time between checking current in-game status
 // ==/Config==
 
 // ==Code==
@@ -126,9 +126,9 @@ const INTERVAL = 1; // seconds, time between checking current in-game status
                 if (!aoe) { continue; }
 
                 var equip = () => doubleClick(item);
-                var name = item.title;
+                var name = item.title.trim().replace(/(\r\n\t|\n|\r\t)/gm,"");;
                 var node = item;
-                var ghost = { equip, name, ghost };
+                var ghost = { equip, aoe, name, ghost };
                 ghosts[aoe] = ghosts[aoe] || ghost; // keep first, assuming best is first
                 ghosts.default = ghosts.default || ghost;
             }
