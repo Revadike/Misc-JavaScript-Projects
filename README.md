@@ -1,2 +1,5 @@
-# userscripts
-Userscripts that don't require a separate repository
+# Miscellaneous JavaScript Project
+
+MIT License for them all.
+
+Feel free to post issues and submit PR's for them!
