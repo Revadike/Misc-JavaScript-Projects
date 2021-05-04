@@ -1,3 +1,5 @@
+// https://www.allkeyshop.com/blog/list/Revadike/305737/
+
 console.log(JSON.stringify([...document.querySelectorAll("tr.game-row")].map(e => ({
 gameId: e.dataset.gameId,
 productId: e.querySelector(".metacritic-button").dataset.productId,
