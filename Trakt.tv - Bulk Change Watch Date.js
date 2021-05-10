@@ -62,9 +62,9 @@ for (let page = 1; page <= lastpage; page++) {
         "sec-fetch-mode": "cors",
         "sec-fetch-site": "same-origin",
         "sec-gpc": "1",
-        "turbolinks-referrer": "https://trakt.tv/users/royalgamer06/history"
+        "turbolinks-referrer": "https://trakt.tv/users/" + username + "/history"
       },
-      "referrer": "https://trakt.tv/users/royalgamer06/history",
+      "referrer": "https://trakt.tv/users/" + username + "/history",
       "referrerPolicy": "strict-origin-when-cross-origin",
       "body": null,
       "method": "GET",
