@@ -75,7 +75,7 @@ async function addUplayFriend(name, delay) {
         "credentials":    "omit",
     }).then((res) => res.json());
 
-    console.log("Added Uplay Friend", { friend, result });
+    console.log("Added Uplay Friend", JSON.stringify({ friend, result }, null, 4));
 }
 
 (async() => {
