@@ -1,4 +1,4 @@
-// the uplay group list, please change
+// The uplay group list, please change
 const UPLAYGROUP = `
 
 PERSON1
@@ -10,8 +10,7 @@ PASTE THE UPLAY GROUP LIST HERE
 
 `;
 
-// the code, do not touch
-
+// The code, do not touch
 /* eslint-disable no-console */
 const DELAY = 4000;
 
@@ -24,6 +23,7 @@ async function addUplayFriend(name, delay) {
     if (delay) {
         await sleep(delay);
     }
+
     let data = JSON.parse(localStorage.PRODOverlayConnectLoginData);
     let { profiles } = await fetch(`https://public-ubiservices.ubi.com/v2/profiles?nameOnPlatform=${name}&platformType=uplay`, {
         "headers": {
