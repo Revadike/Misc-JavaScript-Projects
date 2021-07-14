@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 // the uplay group list, please change
 const UPLAYGROUP = `
 
@@ -13,6 +11,8 @@ PASTE THE UPLAY GROUP LIST HERE
 `;
 
 // the code, do not touch
+
+/* eslint-disable no-console */
 const DELAY = 4000;
 
 function sleep(ms) {
