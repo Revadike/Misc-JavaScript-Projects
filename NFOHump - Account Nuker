@@ -1,0 +1,57 @@
+async function deletePost(pid) {
+
+    await fetch("https://www.nfohump.com/forum/posting.php", {
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+        },
+        "body": "subject=&addbbcode20=%23444444&addbbcode22=12&helpbox=Quote+text%3A+%5Bquote%5Dtext%5B%2Fquote%5D++%28alt%2Bq%29&message=%E2%81%A2%E2%81%A2&mode=editpost&p=" + pid + "&post=Submit",
+        "method": "POST",
+        "mode": "cors",
+        "credentials": "include"
+    });
+
+    await fetch("https://www.nfohump.com/forum/posting.php", {
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+        },
+        "body": "p=" + pid + "&mode=delete&confirm=Yes",
+        "method": "POST",
+        "mode": "cors",
+        "credentials": "include"
+    });
+
+}
+
+async function getPosts(author, page = 0) {
+    let parser = new DOMParser();
+    let html = await fetch("https://www.nfohump.com/forum/search.php?mode=results&start=" + (page * 30), {
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+        },
+        "body": "search_keywords=&search_terms=all&search_author=" + author + "&search_forum=-1&search_time=0&search_fields=all&search_cat=-1&sort_by=0&sort_dir=DESC&show_results=posts&return_chars=0",
+        "method": "POST",
+        "mode": "cors",
+        "credentials": "include"
+    }).then(res => res.text());
+    let DOM = parser.parseFromString(html, "text/html")
+    let posts = [...DOM.querySelectorAll("b+ b a")].map(e => +e.hash.substr(1));
+    if (posts.length >= 30) {
+        posts = posts.concat(await getPosts(author, ++page));
+    }
+    return posts;
+}
+
+
+async function nuke() {
+    console.log("Nuking...");
+    let author = document.querySelector(".logoutbutt").value.replace("logout ", "");
+    let posts = await getPosts(author);
+    console.log("Found " + posts.length + " posts", posts);
+    for (let pid of posts) {
+        await deletePost(pid);
+        console.log("Deleted post " + pid);
+    }
+    console.log("Nuke successfully detonated");
+}
+
+nuke();
