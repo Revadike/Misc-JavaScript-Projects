@@ -1,6 +1,8 @@
 /* eslint-env browser */
 /* global g_sessionID jQuery */
 
+/* Thanks to Sqbika#0657 for the initial script */
+
 (async() => {
     let delay = (ms) => new Promise((res) => setTimeout(res, ms));
     await jQuery.post("/saleaction/ajaxopendoor", {
