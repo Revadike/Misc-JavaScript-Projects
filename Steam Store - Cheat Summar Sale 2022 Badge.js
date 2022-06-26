@@ -1,7 +1,20 @@
 /* eslint-env browser */
 /* global g_sessionID jQuery */
 
+/* HOW TO USE:
+1. Open Console tab of your browser's DevTools
+Chrome: CTRL+SHIFT+J
+Firefox: CTRL+SHIFT+K
+
+2. Copy-paste this entire script
+3. Press ENTER and wait
+
+It should claim all 10 badges and then the final reward.
+*/
+
 /* Thanks to Sqbika#0657 for the initial script */
+/* Revadike for communication */
+/* An anonymous RadicalGDPRist for being lazy to click a single button */
 
 if (jQuery("#application_config").data("userinfo") == null) {
 	console.error("Sale settings not found. Are you on the right page?");
