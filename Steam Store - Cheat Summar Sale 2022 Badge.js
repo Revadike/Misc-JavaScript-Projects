@@ -3,6 +3,10 @@
 
 /* Thanks to Sqbika#0657 for the initial script */
 
+if (jQuery("#application_config").data("userinfo") == null) {
+	console.error("Sale settings not found. Are you on the right page?");
+	console.error("Go to https://store.steampowered.com/sale/clorthax_quest");
+} else {
 (async() => {
     let delay = (ms) => new Promise((res) => setTimeout(res, ms));
     await jQuery.post("/saleaction/ajaxopendoor", {
@@ -66,3 +70,4 @@
 		await delay(1500);
 	}
 })();
+}
