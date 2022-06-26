@@ -53,9 +53,8 @@ if (jQuery("#application_config").data("userinfo") == null) {
 			"door_index":     11, // final reward
 			"clan_accountid": 39049601, // https://store.steampowered.com/news/group/39049601
 		})
-		.done((data) => {
+		.done((json) => {
 			console.log("Response received: (2/3)");
-			const json = JSON.parse(data);
 			if (json.success == 1) {
 				console.log("Succeeded! (3/3)");
 			} else {
