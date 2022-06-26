@@ -38,5 +38,31 @@
         } finally {
             await delay(1500);
         }
-    }
+    };
+    
+	try {
+		console.log("Claiming the final reward... (1/3)");
+		let html = await jQuery.get("/sale/clorthax_quest");
+		await jQuery.post("/saleaction/ajaxopendoor", {
+			"sessionid":      g_sessionID,
+			"authwgtoken":    jQuery("#application_config", html).data("userinfo").authwgtoken,
+			"door_index":     11, // final reward
+			"clan_accountid": 39049601, // https://store.steampowered.com/news/group/39049601
+		})
+		.done((data) => {
+			console.log("Response received: (2/3)");
+			const json = JSON.parse(data);
+			if (json.success == 1) {
+				console.log("Succeeded! (3/3)");
+			} else {
+				console.error(data);
+				console.error("Error occured. Try again or click yourself? (3/3)");
+			}
+		})
+		.fail(() => {console.error("Final reward request failed!")});
+	} catch (e) {
+		console.error("Failed to obtain final reward!", e);
+	} finally {
+		await delay(1500);
+	}
 })();
