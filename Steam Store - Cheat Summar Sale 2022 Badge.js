@@ -1,30 +1,30 @@
 /* eslint-env browser */
 /* global g_sessionID jQuery */
 
-/* HOW TO USE:
-1. Open Console tab of your browser's DevTools
-Chrome: CTRL+SHIFT+J
-Firefox: CTRL+SHIFT+K
-
-2. Copy-paste this entire script
-3. Press ENTER and wait
-
-It should claim all 10 badges and then the final reward.
+/*  HOW TO USE:
+    1.  Open Console tab of your browser's DevTools.
+        Chrome: CTRL+SHIFT+J
+        Firefox: CTRL+SHIFT+K
+    2.  Copy-paste this entire script.
+    3.  Press ENTER and wait.
+        It should claim all 10 badges and then the final reward.
 */
 
 /* Thanks to Sqbika#0657 for the initial script */
-/* Revadike for communication */
-/* An anonymous RadicalGDPRist for being lazy to click a single button */
 
-if (jQuery("#application_config").data("userinfo") == null) {
-	console.error("Sale settings not found. Are you on the right page?");
-	console.error("Go to https://store.steampowered.com/sale/clorthax_quest");
-} else {
 (async() => {
+    if (!jQuery("#application_config").data("userinfo")) {
+        // eslint-disable-next-line no-alert
+        alert("Sale settings not found. Redirecting to a compatible page...");
+        location.href = "https://store.steampowered.com/sale/clorthax_quest";
+        return;
+    }
+
     let delay = (ms) => new Promise((res) => setTimeout(res, ms));
+    let { authwgtoken } = jQuery("#application_config").data("userinfo");
     await jQuery.post("/saleaction/ajaxopendoor", {
+        authwgtoken,
         "sessionid":      g_sessionID,
-        "authwgtoken":    jQuery("#application_config").data("userinfo").authwgtoken,
         "door_index":     0,
         "clan_accountid": 41316928,
     });
@@ -55,31 +55,19 @@ if (jQuery("#application_config").data("userinfo") == null) {
         } finally {
             await delay(1500);
         }
-    };
-    
-	try {
-		console.log("Claiming the final reward... (1/3)");
-		let html = await jQuery.get("/sale/clorthax_quest");
-		await jQuery.post("/saleaction/ajaxopendoor", {
-			"sessionid":      g_sessionID,
-			"authwgtoken":    jQuery("#application_config", html).data("userinfo").authwgtoken,
-			"door_index":     11, // final reward
-			"clan_accountid": 39049601, // https://store.steampowered.com/news/group/39049601
-		})
-		.done((json) => {
-			console.log("Response received: (2/3)");
-			if (json.success == 1) {
-				console.log("Succeeded! (3/3)");
-			} else {
-				console.error(data);
-				console.error("Error occured. Try again or click yourself? (3/3)");
-			}
-		})
-		.fail(() => {console.error("Final reward request failed!")});
-	} catch (e) {
-		console.error("Failed to obtain final reward!", e);
-	} finally {
-		await delay(1500);
-	}
+    }
+    await jQuery.post("/saleaction/ajaxopendoor", {
+        authwgtoken,
+        "sessionid":      g_sessionID,
+        "door_index":     11, // final reward
+        "clan_accountid": 39049601, // https://store.steampowered.com/news/group/39049601
+    }).done((json) => {
+        // eslint-disable-next-line eqeqeq
+        if (json.success == 1) {
+            console.log("Claimed final reward!");
+        } else {
+            console.error("Failed to claim final reward.\nTry again or claim it yourself?", json);
+        }
+    })
+        .fail(() => { console.error("Final reward request failed!"); });
 })();
-}
