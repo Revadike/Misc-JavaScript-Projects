@@ -23,8 +23,8 @@
     let { pidId, locale, country } = pid;
     country = locale.includes(country) ? country : locale.split("_")[1];
     let { offers } = await fetch(`https://api1.origin.com/supercat/${country}/${locale}/supercat-PCWIN_MAC-${country}-${locale}.json.gz`, { credentials: "omit" }).then(res => res.json());
-    // let offersToRedeem = offers.filter(e => e.isZeroPricedOffer === "true").map(e => e.offerId);
-    let offersToRedeem = [...new Set(offers.map(e => e.offerId).concat(offers.map(e => e.extraContent || []).flat()))]
+    let offersToRedeem = offers.filter(e => e.isZeroPricedOffer === "true").map(e => e.offerId);
+//     let offersToRedeem = [...new Set(offers.map(e => e.offerId).concat(offers.map(e => e.extraContent || []).flat()))]
     for (let id of offersToRedeem) {
         let { unlocks } = await fetch(`https://api1.origin.com/supercarp/freegames/${id}/users/${pidId}/checkoutwithcart?locale=${locale}&cartName=store-cart-direct`, {
             "headers": {
