@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Steam Community - Commenter
 // @namespace    Revadike
-// @version      1.0.0
+// @version      1.0.1
 // @description  Leaves steam group & discussion comments
 // @author       Revadike
 // @match        https://steamcommunity.com/groups/*
@@ -24,6 +24,20 @@ let apikey = "";
 
 function sleep(ms) {
     return new Promise((res) => setTimeout(res, ms));
+}
+
+async function getGid(g) {
+    g = g.replace("https://steamcommunity.com/groups/", "").replace("https://steamcommunity.com/gid/", "")
+        .replace("/", "");
+    if (isFinite(g) && g.toString().length === 18) {
+        return g;
+    }
+    let { response } = await fetch(`https://api.steampowered.com/ISteamUser/ResolveVanityURL/v1/?key=${apikey}&vanityurl=${g}&url_type=2`, { "credentials": "omit" }).then((res) => res.json());
+    await sleep(delay);
+    if (response.success === 1) {
+        return response.steamid;
+    }
+    throw new Error(`Failed to get steamid for '${g}'`);
 }
 
 async function showModal(start) {
