@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Steam Community - Commenter
 // @namespace    Revadike
-// @version      1.0.1
+// @version      1.0.2
 // @description  Leaves steam group & discussion comments
 // @author       Revadike
 // @match        https://steamcommunity.com/groups/*
@@ -73,7 +73,8 @@ async function showModal(start) {
         document.getElementById("startBtn").disabled = true;
         delay = Number(document.getElementById("delay").value);
         max = Number(document.getElementById("max").value);
-        comments = Array.from(document.getElementsByClassName("comment")).map((c) => c.value);
+        comments = Array.from(document.getElementsByClassName("comment")).map((c) => c.value)
+            .filter((c) => c.trim());
         await GM.setValue("comments", JSON.stringify(comments));
         await GM.setValue("delay", delay);
         await GM.setValue("max", max);
@@ -123,7 +124,7 @@ async function discussionCommenter() {
 
 (async() => {
     console.log("Comments Filter by Revadike");
-    comments = JSON.parse(await GM.getValue("comments", "[]"));
+    comments = JSON.parse(await GM.getValue("comments", "[]")).filter((c) => c.trim());
     max = Number(await GM.getValue("max", 5));
     delay = Number(await GM.getValue("delay", 1000));
     apikey = (await GM.getValue("apikey", "")).trim();
