@@ -78,7 +78,7 @@ async function showModal(start) {
 
         let steamid = unsafeWindow.g_steamID;
         if (!steamid) {
-            alert("You must be logged in to use this script!");\
+            alert("You must be logged in to use this script!");
             location.reload();
             return;
         }
