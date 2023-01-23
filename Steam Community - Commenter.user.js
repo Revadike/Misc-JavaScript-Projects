@@ -75,9 +75,16 @@ async function showModal(start) {
         max = Number(document.getElementById("max").value);
         comments = Array.from(document.getElementsByClassName("comment")).map((c) => c.value)
             .filter((c) => c.trim());
-        await GM.setValue("comments", JSON.stringify(comments));
-        await GM.setValue("delay", delay);
-        await GM.setValue("max", max);
+
+        let steamid = unsafeWindow.g_steamID;
+        if (!steamid) {
+            alert("You must be logged in to use this script!");\
+            location.reload();
+            return;
+        }
+        await GM.setValue(`${steamid}_comments`, JSON.stringify(comments));
+        await GM.setValue(`${steamid}_delay`, delay);
+        await GM.setValue(`${steamid}_max`, max);
         start();
     });
 }
@@ -124,10 +131,11 @@ async function discussionCommenter() {
 
 (async() => {
     console.log("Comments Filter by Revadike");
-    comments = JSON.parse(await GM.getValue("comments", "[]")).filter((c) => c.trim());
-    max = Number(await GM.getValue("max", 5));
-    delay = Number(await GM.getValue("delay", 1000));
-    apikey = (await GM.getValue("apikey", "")).trim();
+    let steamid = unsafeWindow.g_steamID;
+    comments = JSON.parse(await GM.getValue(`${steamid}_comments`, "[]")).filter((c) => c.trim());
+    max = Number(await GM.getValue(`${steamid}_max`, 5));
+    delay = Number(await GM.getValue(`${steamid}_delay`, 1000));
+    apikey = (await GM.getValue(`${steamid}_apikey`, "")).trim();
     if (apikey === "") {
         let _apikey = await fetch("https://steamcommunity.com/dev/apikey?l=english").then((res) => res.text())
             .then((html) => html.match(/Key: ([0-9A-Z]{32})/)[1])
@@ -135,7 +143,7 @@ async function discussionCommenter() {
         if (!_apikey) {
             alert("Cannot find API key! Please generate one @ https://steamcommunity.com/dev/apikey");
         }
-        await GM.setValue("apikey", _apikey);
+        await GM.setValue(`${steamid}_apikey`, _apikey);
         apikey = _apikey;
     }
 
