@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Steam Community - Commenter
 // @namespace    Revadike
-// @version      1.0.2
+// @version      1.0.3
 // @description  Leaves steam group & discussion comments
 // @author       Revadike
 // @match        https://steamcommunity.com/groups/*
